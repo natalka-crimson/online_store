@@ -1,0 +1,29 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+<h1>{{ category.name }}</h1>
+<form method="GET" class="mb-3">
+    <input type="text" name="search" value="{{ query }}" class="form-control" placeholder="Пошук товарів...">
+    <select name="sort" class="form-select mt-2">
+        <option value="">Сортувати</option>
+        <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Від дешевих до дорогих</option>
+        <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Від дорогих до дешевих</option>
+    </select>
+    <button type="submit" class="btn btn-primary mt-2">Застосувати</button>
+</form>
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                </h5>
+                <p class="card-text">{{ product.price }} грн</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

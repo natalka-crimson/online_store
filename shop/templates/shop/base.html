@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн Магазин</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Навігаційна панель -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Майстерня краси</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">Про нас</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Зв'язок</a>
+                    </li>
+                    <!-- Випадаючий список категорій -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Категорії
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% for category in categories %}
+                            <li><a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex" method="GET" action="{% url 'search_results' %}">
+                    <input class="form-control me-2" type="text" name="q" placeholder="Пошук за назвою">
+                    <button class="btn btn-outline-success" type="submit">Шукати</button>
+                </form>
+                {% if user.is_authenticated %}
+                <a class="btn btn-outline-secondary ms-2" href="{% url 'profile' %}">Profile</a>
+                <a class="btn btn-outline-secondary ms-2" href="{% url 'logout' %}" 
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Logout</a>
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">{% csrf_token %}
+                </form>
+              {% else %}
+                <a class="btn btn-outline-secondary ms-2" href="{% url 'login' %}">Login</a>
+                <a class="btn btn-outline-secondary ms-2" href="{% url 'register' %}">Register</a>
+              {% endif %}
+                <a class="btn btn-outline-secondary ms-2" href="{% url 'cart' %}">Корзина</a>
+            </div>
+        </div>
+    </nav>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Контент -->
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Футер -->
+    <footer class="bg-dark text-white mt-5 p-4 text-center">
+        <p>Майстерня краси: info@beauty.com | Телефон: +380 (96) 894-6209</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

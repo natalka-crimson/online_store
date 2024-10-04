@@ -1,0 +1,19 @@
+{% extends 'shop/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>Оформлення замовлення</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary checkout-btn">Підтвердити замовлення</button>
+</form>
+
+<h2>Товари в замовленні:</h2>
+<ul>
+    {% for product in products %}
+    <li>{{ product.name }} - {{ product.price }} грн</li>
+    {% endfor %}
+</ul>
+<h4>Сума до сплати: {{ price }} грн</h4>
+{% endblock %}

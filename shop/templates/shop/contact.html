@@ -1,0 +1,31 @@
+{% extends 'shop/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+    <h1>Зв'язок</h1>
+    <p>Зв'яжіться з нами за допомогою наступних контактів:</p>
+    <ul>
+        <li>Телефон: +380 (96) 894-6209</li>
+        <li>Email: info@beauty.com</li>
+        <li>Адреса: м. Запоріжжя, Україна</li>
+    </ul>
+    <form method="POST" action="#">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="mb-3">
+            <label for="name" class="form-label">Ваше ім'я</label>
+            <input type="text" class="form-control" id="name" placeholder="Введіть ваше ім'я">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Ваш Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Введіть ваш email">
+        </div>
+        <div class="mb-3">
+            <label for="message" class="form-label">Повідомлення</label>
+            <textarea class="form-control" id="message" rows="3" placeholder="Ваше повідомлення"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Надіслати</button>
+    </form>
+</div>
+{% endblock %}

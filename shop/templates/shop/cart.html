@@ -1,0 +1,22 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+<h1>Корзина</h1>
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.price }} грн</p>
+            </div>
+            <a href="{% url 'remove_from_cart' product.id %}" class="btn btn-danger cart_link">Видалити</a>
+        </div>
+    </div>
+    {% endfor %}
+    {% if products %}
+    <a href="{% url 'checkout' %}" class="btn btn-primary cart_link">Перейти до оформлення замовлення</a>
+    {% endif %}
+</div>
+{% endblock %}
